@@ -21,8 +21,9 @@ development: &default
 
 test:
   <<: *default
+  host: demo_db
   database: myapp_test
 
 production:
   <<: *default
-  database: db/production.postgres
+  database: demo_db/production.postgres
