@@ -46,7 +46,16 @@ ENV BUNDLE_APP_CONFIG $GEM_HOME
 
 
 RUN mkdir -p /usr/src/app
+
+# Bundle before copying the whole app so that installed gems
+# get their own cache. This way code changes don't invalidate
+# cached gems. A change to the gemfile or gemfile.lock will
+# cause them to be invalidated though.
+COPY Gemfile /usr/src/app/
+COPY Gemfile.lock /usr/src/app/
+RUN gem install bundler && bundle install --jobs 20 --retry 5
+
+# Now copy the whole app over
 COPY . /usr/src/app
 WORKDIR /usr/src/app
-RUN gem install bundler && bundle install --jobs 20 --retry 5
 CMD ["bin/bundle", "exec", "unicorn", "-p", "3000"]
