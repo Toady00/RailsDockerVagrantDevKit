@@ -1,5 +1,8 @@
 FROM demo:ci
 
+ENV RAILS_ENV staging
+ENV RAILS_SERVE_STATIC_FILES true 
+
 WORKDIR /usr/src/app
 
 RUN bundle install --deployment
